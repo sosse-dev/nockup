@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "./ui/dialog";
 import Image from "next/image";
 import { cn } from "@/lib/utils";

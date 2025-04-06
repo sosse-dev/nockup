@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import {
   CallControls,
@@ -15,13 +14,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { LayoutList, Users } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import EndCallButton from "./EndCallButton";
+import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
@@ -29,8 +26,8 @@ type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 export default function MeetingRoom() {
   const [layout, setLayout] = useState<CallLayoutType>("speaker-left");
   const [showParticipants, setShowParticipants] = useState(false);
-  const searchParams = useSearchParams();
-  const isPersonalRoom = !searchParams.get("personal");
+  // const searchParams = useSearchParams();
+  // const isPersonalRoom = !searchParams.get("personal");
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
   const router = useRouter();

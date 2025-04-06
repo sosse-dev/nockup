@@ -1,7 +1,6 @@
-// @ts-nocheck
 "use client";
 import { useGetCalls } from "@/hooks/useGetCalls";
-import { CallRecording } from "@stream-io/node-sdk";
+import { CallRecording } from "@stream-io/video-client";
 import { Call } from "@stream-io/video-react-sdk";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,7 +12,7 @@ export default function CallList({
 }: {
   type: "ended" | "upcoming" | "recordings";
 }) {
-  const { endedCalls, upcomingCalls, callRecordings, isLoading } =
+  const { endedCalls, upcomingCalls, callRecordings } =
     useGetCalls();
 
   const router = useRouter();
@@ -57,7 +56,7 @@ export default function CallList({
           .flatMap((call) => call.recordings);
 
         setRecordings(recordings);
-      } catch (error) {
+      } catch {
         toast.error("Try again later");
       }
     };
@@ -76,12 +75,12 @@ export default function CallList({
             key={(meeting as Call).id || i}
             title={
               (meeting as Call).state?.custom?.description?.substring(0, 26) ||
-              meeting?.filename?.substring(0, 20) ||
+              (meeting as CallRecording).filename?.substring(0, 20) ||
               "Ruang Pribadi"
             }
             date={
               (meeting as Call).state?.startsAt?.toLocaleString() ||
-              meeting.start_time.toLocaleString()
+              (meeting as CallRecording).start_time.toLocaleString()
             }
             icon={
               type === "ended"
@@ -95,16 +94,16 @@ export default function CallList({
             buttonText={type === "recordings" ? "Putar" : "Mulai"}
             link={
               type === "recordings"
-                ? meeting.url
-                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meeting.id}`
+                ? (meeting as CallRecording).url
+                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`
             }
             handleClick={
               type === "recordings"
                 ? () => {
-                    router.push(`${meeting.url}`);
+                    router.push(`${(meeting as CallRecording).url}`);
                   }
                 : () => {
-                    router.push(`/meeting/${meeting.id}`);
+                    router.push(`/meeting/${(meeting as Call).id}`);
                   }
             }
           />

@@ -11,7 +11,6 @@ interface HomeCardProps {
 
 export default function HomeCard({
   className,
-  img,
   title,
   description,
   handleClick,
